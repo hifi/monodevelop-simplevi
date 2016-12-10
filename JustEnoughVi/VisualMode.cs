@@ -176,6 +176,18 @@ namespace JustEnoughVi
 
     }
 
+    public class GoToFirstColumnCommand : Command
+    {
+        public GoToFirstColumnCommand(TextEditorData editor) : base(editor) { }
+
+        protected override void Run()
+        {
+            var caretPos = Editor.Caret.Offset;
+            Editor.SetSelection(Mono.TextEditor.DocumentLocation.MinColumn, caretPos);
+            Motion.FirstColumn(Editor);
+        }
+    }
+
     public class VisualMode : ViMode
     {
         private int _startOffset;
@@ -185,6 +197,7 @@ namespace JustEnoughVi
         public VisualMode(TextEditorData editor) : base(editor)
         {
             // visual mode keys
+            CommandMap.Add("0", new GoToFirstColumnCommand(editor));
             CommandMap.Add("d", new CutSelectionCommand(editor));
             CommandMap.Add("x", new CutSelectionCommand(editor));
             CommandMap.Add("y", new YankSelectionCommand(editor));
